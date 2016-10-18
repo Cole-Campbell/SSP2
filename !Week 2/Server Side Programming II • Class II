@@ -1,0 +1,123 @@
+Server Side Programming II • Class II 
+
+SECURITY • One question on the exam about security
+
+A good programmer should write logical, maintainable, extendable, secure code.
+
+If anyone has the ability to add data to a website, we must first validate the data which the user has submitted to ensure it is valid.
+
+DANGERS OF WEB FORMS
+
+Letting someone contribute to your website.
+
+Allowing unknown users to submit data
+Bots
+How is the data used? Saved to DB, sent as Email, updating file system
+Data may be intercepted
+
+ATTACKS
+
+SQL Injection - 
+
+*Login Situation*
+$valid_id="SELECT id from users
+where username = '$_POST[uname]'
+AND password = '$_POST[password]
+";
+
+Instead of username, they can insert "';Delete * from users';"
+
+To prevent SQL injections, you can make sure data put into a form is validated through functions.
+	is_numeric();
+	length of characters
+	no special characters
+
+Intercepting/Stealing data
+
+Easiest way to prevent intercepting is don't use $_GET and to use SSL.
+
+Turning off Debugging on the server.
+
+XSS-Cross Site Scripting
+
+*JavaScript Injection* Hacker tries to inject JavaScript into a webpage.
+
+To prevent XSS-Cross Site Scripting would require converting any code added as a comment to data using HTML entities.
+
+Phising
+
+Scammers who are looking to steal data/information from you.
+
+Pharma Hack
+
+Sends out a load of PINGS to google using virtual URLs. Google will see this virus and will go to these pages which are all 404s
+
+Denial of Service
+
+So many requests to a webserver which causes a website to be shut down for a certain amount of time.
+
+IMPORTANT OF INFORMATION
+
+Every site is at risk. Every site should have basic security precautions. If your site offers a large potential gain to hackers OR a significant loss to you if hacked then it should be even more secure.
+
+BASIC SECURITY
+
+Secure and hard to guess usernames & passwords.
+Hide login URL */wp-admin/..*
+SSL encryption if transferring sensitive data
+Implement firewall 
+Data backups
+Physical security
+Protect web forms
+
+PROTECTING WEB FORMS
+
+Web form data is sent to a php script using GET or POST. Both are insecure so we must check the data before processing.
+
+$_GET
+
+When you submit a form using the GET action the form data is passed to the PHP script as name=value pairs appended to the URL. THis type is insecure and easy to intercept.
+
+$_POST
+
+Data is passed in an HTTP header that is read by the PHP script. More secure than GET but hackers can easily send HTTP headers to PHP files without needing a web form. Therefore any type of data can be sent to your PHP script. How will your script process this data.
+
+FORM SECURITY PLANNING
+
+Plan each form field and determine the type of Data that should be sent. Prevent users from entering incorrect data. Validate the form using JavaScript. Valudate form data using PHP. Sanitise PHP data before use. JavaScript would prevent hackers from submitting data through forms, but not headers. Use PHP to not allow content past the set parameters.
+
+PREVENT INCORRECT DATA
+
+Require the user to choose from present values where possible.
+Restrict the user to a limited number of chars where appropriate.
+Use regular expressions and JavaScript to validate form fields.
+If form data is generated dynamically with PHP then urlencode() the data.
+
+VALIDATE FORM USING PHP
+One the data is sent from the form to your PHP script (or a hacker has sent an HTTP header to your PHP script) you need to validate the data.
+Validation ensures that all required form fields are present. *Can make a honeypot field which has to be empty and is invisible to the user.*
+
+SANITISE FORM DATA
+This is the main task in preventing hacking of forms. Ensure all data is of the correct type. Ensure that only the expected form data is processed (don't use foreach())
+
+SOME USEFUL FUNCTIONS
+strip_tags()
+trim()
+htmlentities()
+htmlspecialchars()
+stripslashes()
+is_numeric(), is_bool(), is_float(), is_string(), is_array()
+strlen() or count()
+
+BUILT-IN PHP FILTERS
+Validate Filers:
+Sanitise Filders:
+
+FILTER VALIDATION EXAMPLE
+
+<?php
+$email_a = 'john@e.com';
+
+if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+	echo "This ($email_a) email address is considered valid."
+}
